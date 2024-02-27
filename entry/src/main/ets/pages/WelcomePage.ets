@@ -30,7 +30,6 @@ struct WelcomePage {
     if (isAgree) {
       // 2.1 同意，跳转至首页
       this.jumpToIndex();
-      this.controller.open();
     } else {
       // 2.2 不同意，弹窗
       this.controller.open();
