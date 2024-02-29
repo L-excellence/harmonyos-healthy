@@ -1,3 +1,5 @@
+import BreakpointType from '../../common/bean/BreanpointType';
+import BreakpointConstants from '../../common/constants/BreakpointConstants';
 import { CommonConstants } from '../../common/constants/CommonConstants'
 import DateUtil from '../../common/utils/DateUtil';
 import CalorieStats from './CalorieStats';
@@ -8,9 +10,11 @@ import NutrientStats from './NutrientStats';
 export default struct StatsCard {
   // 读取全局变量
   @StorageProp("selectedDate") selectedDate: number = DateUtil.beginTimeOfDay(new Date())
+  @StorageProp("currentBreakpoint") currentBreakpoint: string = BreakpointConstants.BREAKPOINT_SM
   controler: CustomDialogController = new CustomDialogController({
     builder: DatePickerDialog({ selectedDate: new Date(this.selectedDate) })
   })
+
   build() {
     Column() {
       // 1. 日期信息
@@ -35,6 +39,11 @@ export default struct StatsCard {
       .backgroundColor(Color.White)
       .borderRadius(CommonConstants.DEFAULT_18)
       .indicatorStyle({ selectedColor: $r("app.color.primary_color")})
+      .displayCount(new BreakpointType({
+        sm: 1,
+        md: 1,
+        lg: 2
+      }).getValue(this.currentBreakpoint))
 
       // 3. 记录列表
     }

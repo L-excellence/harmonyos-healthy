@@ -3,8 +3,11 @@ import BreakpointConstants from '../constants/BreakpointConstants'
 
 export default class BreakpointSystem{
 
+  // 小屏
   private smListener: mediaQuery.MediaQueryListener = mediaQuery.matchMediaSync(BreakpointConstants.RANGE_SM)
+  // 中屏
   private mdListener: mediaQuery.MediaQueryListener = mediaQuery.matchMediaSync(BreakpointConstants.RANGE_MD)
+  // 大屏
   private lgListener: mediaQuery.MediaQueryListener = mediaQuery.matchMediaSync(BreakpointConstants.RANGE_LG)
 
   smListenerCallback(result: mediaQuery.MediaQueryResult){
