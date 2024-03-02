@@ -9,6 +9,15 @@ struct Index {
   @State currentIndex: number = 0
   private breakpointSystem: BreakpointSystem = new BreakpointSystem()
   @StorageProp("currentBreakpoint") currentBreakpoint: string = BreakpointConstants.BREAKPOINT_SM
+  @State isPageShow: boolean = false;
+
+  onPageShow() {
+    this.isPageShow = true;
+  }
+
+  onPageHide() {
+    this.isPageShow = false;
+  }
 
   // 自定义 Bar 样式
   @Builder TabBarBuilder(title: ResourceStr, image: ResourceStr, index: number) {
@@ -47,7 +56,7 @@ struct Index {
   build() {
     Tabs({ barPosition: this.chooseBarPosition() }) {
       TabContent() {
-        RecordIndex()
+        RecordIndex({ isPageShow: this.isPageShow })
       }
       .tabBar(this.TabBarBuilder($r("app.string.tab_record"), $r("app.media.ic_calendar"), 0))
 

@@ -1,38 +1,51 @@
 import { CommonConstants } from '../../common/constants/CommonConstants'
+import ItemModel from '../../model/ItemModel';
+import GroupInfo from '../../viewmodel/GroupInfo';
+import ItemCategory from '../../viewmodel/ItemCategory';
+import RecordItem from '../../viewmodel/RecordItem';
 @Component
 export default struct ItemList {
-  showPanel: () => void;
+  showPanel: (item: RecordItem) => void;
+  @Prop isFood: boolean;
 
   build() {
     Tabs() {
       TabContent() {
-        this.TabContentBuilder()
+        this.TabContentBuilder(ItemModel.list(this.isFood))
       }
       .tabBar("全部")
+      
+      ForEach(ItemModel.listItemGroupByCategory(this.isFood), (group: GroupInfo<ItemCategory, RecordItem>) => {
+        TabContent() {
+          this.TabContentBuilder(group.items)
+        }
+        .tabBar(group.type.name)
+      })
 
-      TabContent() {
-        this.TabContentBuilder()
-      }
-      .tabBar("主食")
-
-      TabContent() {
-        this.TabContentBuilder()
-      }
-      .tabBar("肉蛋奶")
+      // TabContent() {
+      //   this.TabContentBuilder()
+      // }
+      // .tabBar("主食")
+      //
+      // TabContent() {
+      //   this.TabContentBuilder()
+      // }
+      // .tabBar("肉蛋奶")
     }
     .width(CommonConstants.THOUSANDTH_940)
     .height("100%")
+    .barMode(BarMode.Scrollable)
   }
 
-  @Builder TabContentBuilder() {
+  @Builder TabContentBuilder(items: RecordItem[]) {
     List({ space: CommonConstants.SPACE_10 }) {
-      ForEach([1, 2, 3, 4, 5, 6], (item) => {
+      ForEach(items, (item: RecordItem) => {
         ListItem() {
           Row({ space: CommonConstants.SPACE_6 }) {
-            Image($r("app.media.toast")).width(50)
+            Image(item.image).width(50)
             Column({ space: CommonConstants.SPACE_4 }) {
-              Text("全麦吐司").fontWeight(CommonConstants.FONT_WEIGHT_500)
-              Text("91千卡/片").fontSize(14).fontColor($r("app.color.light_gray"))
+              Text(item.name).fontWeight(CommonConstants.FONT_WEIGHT_500)
+              Text(`${item.calorie}千卡/${item.unit}`).fontSize(14).fontColor($r("app.color.light_gray"))
             }
             Blank()
             Image($r("app.media.ic_public_add_norm_filled"))
@@ -42,7 +55,7 @@ export default struct ItemList {
           .width("100%")
           .padding(CommonConstants.SPACE_6)
         }
-        .onClick(() => this.showPanel())
+        .onClick(() => this.showPanel(item))
       })
     }
     .width("100%")

@@ -5,9 +5,11 @@ import Logger from './Logger';
 
 const DB_FILENAME: string = 'HeiMaHealthy.db'
 
+// 通用关系型数据库，操作方法。
 class DbUtil {
   rdbStore: relationalStore.RdbStore
 
+  // 数据库操作对象，初始化
   initDB(context: common.UIAbilityContext): Promise<void> {
     let config: relationalStore.StoreConfig = {
       name: DB_FILENAME,
@@ -27,6 +29,7 @@ class DbUtil {
     })
   }
 
+  // 创建表
   createTable(createSQL: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.rdbStore.executeSql(createSQL)
